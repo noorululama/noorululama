@@ -4,7 +4,12 @@ import HeroSection from "@/components/sectons/HeroSection";
 import StatsSection from "@/components/sectons/StatsSection";
 import TestimonialsSection from "@/components/sectons/TestimonialsSection";
 
-import Image from "next/image";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home | Noorul Ulama - Islamic Excellence & Education",
+  description: "Welcome to Noorul Ulama Students Association at Jamia Nooriyya Arabiyya Pattikkad. Join us in our journey of Islamic education, cultural preservation, and community service.",
+};
 
 export default function Home() {
   return (
