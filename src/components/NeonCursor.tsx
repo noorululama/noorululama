@@ -33,6 +33,7 @@ const colorMap: { [key: string]: { primary: string; secondary: string } } = {
 const defaultColor = { primary: '16, 185, 129', secondary: '20, 184, 166' }; // emerald-to-teal
 
 const NeonCursor = () => {
+  const [isMobile, setIsMobile] = useState(false);
   const [position, setPosition] = useState({
     x: 0,
     y: 0,
@@ -44,6 +45,26 @@ const NeonCursor = () => {
   const [currentColor, setCurrentColor] = useState(defaultColor);
   const trailControls = useAnimation();
   const glowControls = useAnimation();
+
+  // Detect mobile devices
+  useEffect(() => {
+    const checkMobile = () => {
+      const isTouchDevice = 
+        'ontouchstart' in window || 
+        navigator.maxTouchPoints > 0 || 
+        window.matchMedia('(pointer: coarse)').matches ||
+        window.innerWidth < 768; // Hide on screens smaller than 768px
+      
+      setIsMobile(isTouchDevice);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, []);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     setPosition((prev) => ({
@@ -89,6 +110,9 @@ const NeonCursor = () => {
   }, [trailControls, glowControls]);
 
   useEffect(() => {
+    // Don't add event listeners on mobile
+    if (isMobile) return;
+
     const handleCursorColorChange = (e: CustomEvent) => {
       const colorClass = e.detail.color;
       const colors = colorMap[colorClass] || defaultColor;
@@ -110,7 +134,12 @@ const NeonCursor = () => {
       window.removeEventListener('mouseout', handleMouseOut);
       window.removeEventListener('cursorColorChange', handleCursorColorChange as EventListener);
     };
-  }, [handleMouseMove, handleMouseOver, handleMouseOut]);
+  }, [isMobile, handleMouseMove, handleMouseOver, handleMouseOut]);
+
+  // Don't render custom cursor on mobile devices
+  if (isMobile) {
+    return null;
+  }
 
   return (
     <div className='neon-cursor-container'>

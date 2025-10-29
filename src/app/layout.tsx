@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/navbar";
 import NeonCursor from "@/components/NeonCursor";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import Footer from "@/components/ui/footer";
 import { organizationSchema, websiteSchema } from "@/lib/structured-data";
 import { Suspense } from "react";
 
@@ -169,6 +170,7 @@ export default function RootLayout({
         <TooltipProvider delayDuration={0}>
           <NeonCursor />
           {children}
+          <Footer />
           <Navbar />
         </TooltipProvider>
       </body>

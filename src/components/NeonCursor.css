@@ -1,6 +1,25 @@
-/* Hide the default cursor globally */
-body {
-  cursor: none;
+/* Hide the default cursor ONLY on desktop devices (non-touch screens) */
+@media (hover: hover) and (pointer: fine) and (min-width: 768px) {
+  body {
+    cursor: none;
+  }
+
+  /* Hide cursor on clickable elements too */
+  a, button, input, [data-hover="true"] {
+    cursor: none !important;
+  }
+}
+
+/* Show default cursor on mobile/touch devices */
+@media (hover: none) or (pointer: coarse) or (max-width: 767px) {
+  body {
+    cursor: auto;
+  }
+
+  /* Ensure cursor shows on clickable elements on mobile */
+  a, button, input, [data-hover="true"] {
+    cursor: pointer;
+  }
 }
 
 /* Container for cursor elements */
@@ -48,9 +67,4 @@ body {
   z-index: 9999;
   filter: blur(8px);
   transition: background 0.3s ease;
-}
-
-/* Optional: Add cursor interaction styles for clickable elements */
-a, button, input, [data-hover="true"] {
-  cursor: none;
 }
