@@ -1,23 +1,25 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Outfit, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/navbar";
 import NeonCursor from "@/components/NeonCursor";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import Footer from "@/components/ui/footer";
+import Header from "@/components/header";
 import { organizationSchema, websiteSchema } from "@/lib/structured-data";
 import { Suspense } from "react";
+import { ThemeProvider } from "@/components/theme-provider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
   display: "swap",
   preload: true,
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
   display: "swap",
   preload: true,
@@ -140,7 +142,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" dir="ltr">
+    <html lang="en" dir="ltr" suppressHydrationWarning>
       <head>
         {/* Structured Data for SEO */}
         <script
@@ -162,17 +164,25 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${outfit.variable} ${playfair.variable} antialiased bg-background text-foreground`}
       >
-        <Suspense fallback={null}>
-          <GoogleAnalytics />
-        </Suspense>
-        <TooltipProvider delayDuration={0}>
-          <NeonCursor />
-          {children}
-          <Footer />
-          <Navbar />
-        </TooltipProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Suspense fallback={null}>
+            <GoogleAnalytics />
+          </Suspense>
+          <TooltipProvider delayDuration={0}>
+            <NeonCursor />
+            <Header />
+            {children}
+            <Footer />
+            <Navbar />
+          </TooltipProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

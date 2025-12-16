@@ -807,9 +807,9 @@ const SubWingsSection = () => {
         {hasPrevious && (
           <button
             onClick={handlePrevious}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 hover:bg-white shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 z-50"
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 z-50"
           >
-            <ChevronLeft className="w-6 h-6 text-gray-700" />
+            <ChevronLeft className="w-6 h-6 text-slate-700 dark:text-slate-300" />
           </button>
         )}
 
@@ -817,199 +817,114 @@ const SubWingsSection = () => {
         {hasNext && (
           <button
             onClick={handleNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 hover:bg-white shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 z-50"
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800 shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 z-50"
           >
-            <ChevronRight className="w-6 h-6 text-gray-700" />
+            <ChevronRight className="w-6 h-6 text-slate-700 dark:text-slate-300" />
           </button>
         )}
         <div
-          className="bg-white rounded-3xl max-w-6xl w-full max-h-[95vh] overflow-y-auto shadow-2xl animate-slideUp my-8"
+          className="bg-white dark:bg-slate-900 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-slideUp my-8 border border-slate-200 dark:border-slate-800 relative"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Header with Image */}
-          <div className="relative h-64 md:h-80">
-            <img
-              src={wing.image}
-              alt={wing.title}
-              className="w-full h-full object-cover"
-            />
-            <div className={`absolute inset-0 bg-gradient-to-t ${wing.color} opacity-40`} />
-
-            {/* Close Button */}
+          {/* Close Button - Sticky */}
+          <div className="sticky top-0 right-0 z-20 flex justify-end p-4 pointer-events-none">
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center transition-all duration-300 hover:rotate-90 group shadow-lg z-10"
+              className="pointer-events-auto bg-white dark:bg-slate-800 rounded-full p-2 shadow-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
             >
-              <X className="w-5 h-5 text-gray-700 group-hover:text-red-500 transition-colors" />
+              <X className="w-5 h-5 text-slate-600 dark:text-slate-400" />
             </button>
-
-            {/* Progress Indicator */}
-            <div className="absolute top-4 left-4 bg-white/90 px-4 py-2 rounded-full shadow-lg">
-              <div className="flex items-center gap-2 text-sm text-gray-700">
-                <Star className="w-4 h-4 text-emerald-600" />
-                <span className="font-medium">Wing {currentIndex + 1} of {filteredWings.length}</span>
-              </div>
-            </div>
-
-            {/* Wing Title Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 bg-gradient-to-t from-black/80 to-transparent">
-              <div className="flex items-center gap-4 mb-3">
-                <div className={`p-4 rounded-xl bg-gradient-to-r ${wing.color} text-white shadow-xl`}>
-                  {wing.icon}
-                </div>
-                <span className="text-5xl">{wing.emoji}</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">{wing.title}</h2>
-              <p className="text-white/90 text-lg">Established {wing.established} • {wing.totalMembers} Active Members</p>
-            </div>
           </div>
 
-          {/* Content */}
-          <div className="p-6 md:p-10">
-            {/* Description */}
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">About This Wing</h3>
-              <p className="text-gray-700 leading-relaxed text-lg">{wing.fullDescription}</p>
-            </div>
-
-            {/* Leadership Team */}
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <Award className="w-6 h-6 text-emerald-600" />
-                Leadership Team
-              </h3>
-
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
-                {/* Chairman */}
-                <div className={`bg-gradient-to-br ${wing.bgColor} border-2 ${wing.borderColor} rounded-2xl p-6 hover:shadow-lg transition-all duration-300`}>
-                  <div className="flex items-center gap-4 mb-4">
-                    <img
-                      src={wing.chairman.image}
-                      alt={wing.chairman.name}
-                      className="w-20 h-20 rounded-full object-cover border-4 border-white shadow-lg"
-                    />
-                    <div>
-                      <div className={`text-xs font-semibold ${wing.textColor} uppercase mb-1`}>Chairman</div>
-                      <h4 className="text-xl font-bold text-gray-900">{wing.chairman.name}</h4>
-                      <p className="text-sm text-gray-600">{wing.chairman.department}</p>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-gray-600 text-sm">
-                      <MapPin className="w-4 h-4 text-emerald-600" />
-                      <span className="truncate">{wing.chairman.location}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-600 text-sm">
-                      <Phone className="w-4 h-4 text-emerald-600" />
-                      <span>{wing.chairman.phone}</span>
-                    </div>
+          <div className="px-6 md:px-10 pb-10 -mt-14">
+            {/* Header Section */}
+            <div className="flex flex-col md:flex-row gap-8 mb-10 items-start">
+              <div className="w-full md:w-1/3 aspect-[4/3] relative rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <img
+                  src={wing.image}
+                  alt={wing.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex-1 space-y-4 pt-4">
+                <div className="flex items-center gap-3">
+                  <span className="text-4xl">{wing.emoji}</span>
+                  <div className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700`}>
+                    {wing.category}
                   </div>
                 </div>
-
-                {/* Convener */}
-                <div className={`bg-gradient-to-br ${wing.bgColor} border-2 ${wing.borderColor} rounded-2xl p-6 hover:shadow-lg transition-all duration-300`}>
-                  <div className="flex items-center gap-4 mb-4">
-                    <img
-                      src={wing.convener.image}
-                      alt={wing.convener.name}
-                      className="w-20 h-20 rounded-full object-cover border-4 border-white shadow-lg"
-                    />
-                    <div>
-                      <div className={`text-xs font-semibold ${wing.textColor} uppercase mb-1`}>Convener</div>
-                      <h4 className="text-xl font-bold text-gray-900">{wing.convener.name}</h4>
-                      <p className="text-sm text-gray-600">{wing.convener.department}</p>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-gray-600 text-sm">
-                      <MapPin className="w-4 h-4 text-emerald-600" />
-                      <span className="truncate">{wing.convener.location}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-600 text-sm">
-                      <Phone className="w-4 h-4 text-emerald-600" />
-                      <span>{wing.convener.phone}</span>
-                    </div>
-                  </div>
+                <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-none">
+                  {wing.title}
+                </h2>
+                <div className="flex flex-wrap gap-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+                  <span className="flex items-center gap-1"><Calendar className="w-4 h-4" /> Est. {wing.established}</span>
+                  <span className="flex items-center gap-1"><Users className="w-4 h-4" /> {wing.totalMembers} Members</span>
                 </div>
+                <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed max-w-2xl">
+                  {wing.fullDescription}
+                </p>
               </div>
             </div>
 
-            {/* Wing Members */}
-
-            {/* <div className="mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <Users className="w-6 h-6 text-emerald-600" />
-                Wing Members
-              </h3>
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
-                {wing.members.map((member, index) => (
-                  <div
-                    key={index}
-                    className="bg-white border-2 border-gray-100 rounded-lg p-2 hover:shadow-lg hover:border-emerald-200 transition-all duration-300 group"
-                  >
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-full aspect-square rounded-md object-cover mb-2 group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <h4 className="font-semibold text-gray-900 text-xs mb-0.5 truncate">{member.name}</h4>
-                    <p className="text-[10px] text-gray-600 truncate">{member.role}</p>
-                  </div>
-                ))}
-              </div>
-            </div> */}
-
-            {/* Achievements & Features */}
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
-              {/* Achievements */}
-              <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-emerald-600" />
-                  Key Achievements
+            <div className="grid md:grid-cols-2 gap-12">
+              {/* Left Column: Leadership */}
+              <div className="space-y-6">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2">
+                  <Award className="w-5 h-5 text-emerald-600" /> Leadership
                 </h3>
-                <div className="space-y-3">
-                  {wing.achievements.map((achievement: any, index: number) => (
-                    <div key={index} className="flex items-start gap-3 bg-emerald-50 rounded-lg p-3">
-                      <Sparkles className="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700 text-sm">{achievement}</span>
+                <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+                  <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Chairman</div>
+                  <div className="flex items-center gap-4">
+                    <img src={wing.chairman.image} alt={wing.chairman.name} className="w-16 h-16 rounded-full object-cover border-2 border-white dark:border-slate-600" />
+                    <div>
+                      <div className="font-bold text-lg text-slate-900 dark:text-white">{wing.chairman.name}</div>
+                      <div className="text-sm text-slate-500">{wing.chairman.department}</div>
+                      <div className="text-xs text-slate-400 mt-1 flex items-center gap-1"><Phone className="w-3 h-3" /> {wing.chairman.phone}</div>
                     </div>
-                  ))}
+                  </div>
+                </div>
+                <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+                  <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Convener</div>
+                  <div className="flex items-center gap-4">
+                    <img src={wing.convener.image} alt={wing.convener.name} className="w-16 h-16 rounded-full object-cover border-2 border-white dark:border-slate-600" />
+                    <div>
+                      <div className="font-bold text-lg text-slate-900 dark:text-white">{wing.convener.name}</div>
+                      <div className="text-sm text-slate-500">{wing.convener.department}</div>
+                      <div className="text-xs text-slate-400 mt-1 flex items-center gap-1"><Phone className="w-3 h-3" /> {wing.convener.phone}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Features */}
-              <div className="mb-8">
-                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <Target className="w-5 h-5 text-emerald-600" />
-                  Key Features
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {wing.features.map((feature: any, index: number) => (
-                    <div
-                      key={index}
-                      className={`bg-gradient-to-br ${wing.bgColor} border ${wing.borderColor} rounded-xl p-4 hover:shadow-md transition-all duration-300`}
-                    >
-                      <div className="flex  items-center gap-3">
-                        <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${wing.color}`} />
-                        <span className="text-gray-700 font-medium text-sm">{feature}</span>
-                      </div>
-                    </div>
-                  ))}
+              {/* Right Column: Achievements & Features */}
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2 mb-4">
+                    <TrendingUp className="w-5 h-5 text-emerald-600" /> Achievements
+                  </h3>
+                  <ul className="space-y-3">
+                    {wing.achievements.map((item: string, idx: number) => (
+                      <li key={idx} className="flex gap-3 text-slate-600 dark:text-slate-300 text-sm">
+                        <Sparkles className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2 mb-4">
+                    <Target className="w-5 h-5 text-emerald-600" /> Focus Areas
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {wing.features.map((feature: string, index: number) => (
+                      <span key={index} className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm font-medium border border-slate-200 dark:border-slate-700">
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
-
-            </div>
-
-
-
-            {/* CTA Button */}
-            <div className="text-center pt-6 border-t border-gray-200">
-              <button onClick={onClose}
-                className={`inline-flex items-center gap-3 bg-gradient-to-r ${wing.color} text-white px-8 py-4 rounded-2xl font-semibold hover:shadow-xl transition-all duration-300 transform hover:scale-105`}>
-                <ChevronLeft className="w-5 h-5" />
-                <span>Back to Wing</span>
-                
-              </button>
             </div>
           </div>
         </div>
@@ -1021,7 +936,7 @@ const SubWingsSection = () => {
     <section
       ref={sectionRef}
       id="subwings-section"
-      className="relative py-16 sm:py-24 lg:py-32 bg-gradient-to-br from-gray-50 via-white to-blue-50 overflow-hidden"
+      className="relative py-16 sm:py-24 lg:py-32 bg-slate-50 dark:bg-background overflow-hidden"
       onMouseEnter={() => {
         const event = new CustomEvent('cursorColorChange', {
           detail: { color: 'from-emerald-500 to-teal-500' }
@@ -1043,43 +958,34 @@ const SubWingsSection = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* Section Header */}
-        <div className={`text-center mb-12 sm:mb-16 lg:mb-20 transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-          }`}>
-          <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-medium mb-4 animate-bounce-slow">
-            <Star className="w-4 h-4 animate-pulse" />
+        {/* Section Header */}
+        <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          <span className="text-emerald-600 dark:text-emerald-400 font-bold tracking-widest uppercase text-sm mb-4 block">
             16 Specialized Divisions
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
-            Our <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Sub Wings</span>
+          </span>
+          <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tight">
+            OUR <span className="text-emerald-600">SUB WINGS</span>
           </h2>
-          <div className="w-24 sm:w-32 h-1.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mx-auto mb-6 animate-expand" />
-          <p className="text-base sm:text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-            Discover our diverse sub-wings, each dedicated to nurturing specific talents and interests while staying true to our Islamic values
+          <p className="text-lg sm:text-xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto font-light leading-relaxed">
+            Discover our diverse sub-wings, each dedicated to nurturing specific talents and interests while staying true to our Islamic values.
           </p>
         </div>
 
         {/* Category Filter */}
-        <div className={`mb-12 sm:mb-16 transition-all duration-1000 delay-300 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-          }`}>
-          <div className="flex items-center justify-center mb-6">
-            <Filter className="w-5 h-5 text-gray-500 mr-2" />
-            <span className="text-gray-600 font-medium">Filter by Category</span>
-          </div>
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
+        {/* Category Filter */}
+        <div className={`mb-16 flex justify-center transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+          <div className="flex flex-wrap justify-center gap-2 p-1.5 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
             {categories.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`group flex items-center gap-2 px-4 sm:px-6 py-3 rounded-full font-medium transition-all duration-300 text-sm sm:text-base ${selectedCategory === category.id
-                  ? 'bg-emerald-600 text-white shadow-lg scale-105'
-                  : 'bg-white text-gray-600 hover:bg-emerald-50 hover:text-emerald-600 border border-gray-200 hover:border-emerald-200'
+                className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 ${selectedCategory === category.id
+                  ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
               >
                 {category.icon}
                 <span>{category.label}</span>
-                {selectedCategory === category.id && (
-                  <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                )}
               </button>
             ))}
           </div>
@@ -1087,9 +993,9 @@ const SubWingsSection = () => {
 
         {/* Featured Wing Spotlight */}
         {currentWings.length > 0 && (
-          <div 
+          <div
             className={`mb-16 sm:mb-20 transition-all duration-1000 delay-500 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-            }`}
+              }`}
             onMouseEnter={() => {
               const event = new CustomEvent('cursorColorChange', {
                 detail: { color: currentWings[activeWing]?.color }
@@ -1103,7 +1009,7 @@ const SubWingsSection = () => {
               window.dispatchEvent(resetEvent);
             }}
           >
-            <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
               <div className="grid lg:grid-cols-2 gap-0">
                 {/* Content */}
                 <div className="p-8 sm:p-12 lg:p-16 flex flex-col justify-center">
@@ -1114,21 +1020,21 @@ const SubWingsSection = () => {
                       </div>
                       <span className="text-4xl">{currentWings[activeWing]?.emoji}</span>
                     </div>
-                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-4">
                       {currentWings[activeWing]?.title}
                     </h3>
-                    <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                    <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
                       {currentWings[activeWing]?.description}
                     </p>
                   </div>
 
                   <div className="space-y-4 mb-8">
-                    <h4 className="font-semibold text-gray-900">Key Features:</h4>
+                    <h4 className="font-semibold text-slate-900 dark:text-white">Key Features:</h4>
                     <div className="grid sm:grid-cols-2 gap-3">
                       {currentWings[activeWing]?.features.map((feature, index) => (
                         <div key={index} className="flex items-center gap-2">
                           <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${currentWings[activeWing]?.color}`} />
-                          <span className="text-gray-700 text-sm">{feature}</span>
+                          <span className="text-slate-700 dark:text-slate-300 text-sm">{feature}</span>
                         </div>
                       ))}
                     </div>
@@ -1144,7 +1050,7 @@ const SubWingsSection = () => {
                 </div>
 
                 {/* Image */}
-                <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 min-h-[300px] lg:min-h-[500px]">
+                <div className="relative bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 min-h-[300px] lg:min-h-[500px]">
                   <img
                     src={currentWings[activeWing]?.image}
                     alt={currentWings[activeWing]?.title}
@@ -1164,8 +1070,7 @@ const SubWingsSection = () => {
             {currentWings.map((wing, index) => (
               <div
                 key={index}
-                className={`group cursor-pointer transition-all duration-500 hover:scale-105 transform rounded-2xl relative overflow-hidden ${index === activeWing ? 'scale-105' : ''
-                  }`}
+                className="group cursor-pointer"
                 onClick={() => setActiveWing(index)}
                 onMouseEnter={() => {
                   const event = new CustomEvent('cursorColorChange', {
@@ -1179,69 +1084,46 @@ const SubWingsSection = () => {
                   });
                   window.dispatchEvent(resetEvent);
                 }}
-                style={{ animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both` }}
               >
-                <div className={`relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border-2 ${index === activeWing ? wing.borderColor : 'border-gray-100 hover:border-gray-200'
-                  }`}>
+                <div className={`relative bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 transition-all duration-300 group-hover:border-emerald-500/50 group-hover:shadow-xl ${index === activeWing ? 'ring-2 ring-emerald-500 ring-offset-2 dark:ring-offset-slate-950' : ''}`}>
+
                   {/* Card Image */}
-                  <div className="relative h-48 sm:h-52 overflow-hidden rounded-t-2xl">
+                  <div className="relative h-48 overflow-hidden">
                     <img
                       src={wing.image}
                       alt={wing.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
-                    <div className={`absolute inset-0 bg-gradient-to-t ${wing.color} opacity-20 transition-opacity duration-500`} />
-                  </div>
-
-                  {/* Card Header */}
-                  <div className={`${wing.bgColor} p-6`}>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className={`inline-flex p-3 rounded-xl bg-gradient-to-r ${wing.color} text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                        {wing.icon}
-                      </div>
-                      <span className="text-2xl group-hover:scale-110 transition-transform duration-300">
-                        {wing.emoji}
-                      </span>
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
+                    <div className="absolute bottom-4 left-4 text-white flex items-center gap-2">
+                      <span className="text-2xl">{wing.emoji}</span>
+                      <h3 className="font-bold text-lg">{wing.title}</h3>
                     </div>
-                    <h3 className={`text-xl font-bold ${wing.textColor} mb-2 group-hover:scale-105 transition-transform duration-300`}>
-                      {wing.title}
-                    </h3>
-                    <div className={`w-12 h-1 bg-gradient-to-r ${wing.color} rounded-full`} />
                   </div>
 
                   {/* Card Content */}
-                  <div className="p-6">
-                    <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
+                  <div className="p-5">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className={`p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 group-hover:text-white group-hover:bg-gradient-to-r ${wing.color} transition-all`}>
+                        {wing.icon}
+                      </div>
+                      <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">{wing.category}</div>
+                    </div>
+
+                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4 line-clamp-2">
                       {wing.description}
                     </p>
 
-                    {/* Features */}
-                    <div className="space-y-2 mb-6">
-                      {wing.features.slice(0, 2).map((feature, featureIndex) => (
-                        <div key={featureIndex} className="flex items-center gap-2">
-                          <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${wing.color}`} />
-                          <span className="text-xs text-gray-600">{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Action Button */}
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         setSelectedWing(wing);
                       }}
-                      className={`w-full bg-gradient-to-r ${wing.color} text-white py-3 px-4 rounded-xl font-medium text-sm hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 group-hover:scale-105 transform`}
+                      className="text-sm font-semibold text-emerald-600 flex items-center gap-1 group/btn hover:text-emerald-700"
                     >
-                      <Eye className="w-4 h-4" />
-                      <span>View Details</span>
+                      View Details <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
                     </button>
                   </div>
-
-                  {/* Active Indicator */}
-                  {index === activeWing && (
-                    <div className="absolute top-4 right-4 w-3 h-3 bg-emerald-500 rounded-full animate-pulse shadow-lg z-10" />
-                  )}
                 </div>
               </div>
             ))}
@@ -1253,7 +1135,7 @@ const SubWingsSection = () => {
               <button
                 onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}
                 disabled={currentPage === 0}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
               >
                 <ChevronLeft className="w-4 h-4" />
                 <span className="hidden sm:inline">Previous</span>
@@ -1266,7 +1148,7 @@ const SubWingsSection = () => {
                     onClick={() => setCurrentPage(i)}
                     className={`w-10 h-10 rounded-lg font-medium transition-all duration-300 ${currentPage === i
                       ? 'bg-emerald-600 text-white shadow-lg scale-105'
-                      : 'bg-white text-gray-600 hover:bg-emerald-50 border border-gray-200'
+                      : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 border border-slate-200 dark:border-slate-800'
                       }`}
                   >
                     {i + 1}
@@ -1277,7 +1159,7 @@ const SubWingsSection = () => {
               <button
                 onClick={() => setCurrentPage(prev => Math.min(totalPages - 1, prev + 1))}
                 disabled={currentPage === totalPages - 1}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
               >
                 <span className="hidden sm:inline">Next</span>
                 <ChevronRight className="w-4 h-4" />
@@ -1289,26 +1171,26 @@ const SubWingsSection = () => {
         {/* Summary Stats */}
         <div className={`mt-16 sm:mt-20 text-center transition-all duration-1000 delay-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
           }`}>
-          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-8 sm:p-12 border border-emerald-100">
-            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">
+          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-2xl p-8 sm:p-12 border border-emerald-100 dark:border-emerald-900/30">
+            <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-6">
               Join Our Thriving Community
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8">
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-emerald-600 mb-2">16</div>
-                <div className="text-gray-600 text-sm sm:text-base">Active Wings</div>
+                <div className="text-2xl sm:text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">16</div>
+                <div className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">Active Wings</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-teal-600 mb-2">500+</div>
-                <div className="text-gray-600 text-sm sm:text-base">Participants</div>
+                <div className="text-2xl sm:text-3xl font-bold text-teal-600 dark:text-teal-400 mb-2">500+</div>
+                <div className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">Participants</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-cyan-600 mb-2">100+</div>
-                <div className="text-gray-600 text-sm sm:text-base">Annual Programs</div>
+                <div className="text-2xl sm:text-3xl font-bold text-cyan-600 dark:text-cyan-400 mb-2">100+</div>
+                <div className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">Annual Programs</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-2">38+</div>
-                <div className="text-gray-600 text-sm sm:text-base">Years Legacy</div>
+                <div className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">38+</div>
+                <div className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">Years Legacy</div>
               </div>
             </div>
           </div>

@@ -5,7 +5,7 @@ import { Home, ArrowLeft } from 'lucide-react'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex items-center justify-center px-4 transition-colors duration-300">
       <div className="max-w-2xl w-full text-center">
         {/* 404 Number */}
         <div className="relative mb-8">
@@ -16,24 +16,24 @@ export default function NotFound() {
         </div>
 
         {/* Title */}
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">
           Page Not Found
         </h2>
 
         {/* Description */}
-        <p className="text-lg sm:text-xl text-gray-400 mb-8 max-w-md mx-auto">
+        <p className="text-lg sm:text-xl text-slate-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
           Sorry, we couldn&apos;t find the page you&apos;re looking for. It might have been moved or deleted.
         </p>
 
         {/* Arabic Quote */}
-        <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 mb-8 max-w-lg mx-auto">
-          <p className="text-2xl text-emerald-400 mb-2 font-arabic">
+        <div className="bg-white/80 dark:bg-white/5 backdrop-blur-sm border border-slate-200 dark:border-white/10 rounded-2xl p-6 mb-8 max-w-lg mx-auto shadow-sm dark:shadow-none">
+          <p className="text-2xl text-emerald-600 dark:text-emerald-400 mb-2 font-arabic">
             إِنَّ مَعَ الْعُسْرِ يُسْرًا
           </p>
-          <p className="text-gray-300 text-sm">
+          <p className="text-slate-700 dark:text-gray-300 text-sm">
             &ldquo;Indeed, with hardship comes ease&rdquo;
           </p>
-          <p className="text-gray-500 text-xs mt-1">Quran 94:6</p>
+          <p className="text-slate-500 dark:text-gray-500 text-xs mt-1">Quran 94:6</p>
         </div>
 
         {/* Action Buttons */}
@@ -46,18 +46,18 @@ export default function NotFound() {
             <span>Go to Homepage</span>
           </Link>
 
-          <Link
-            href="javascript:history.back()"
-            className="group flex items-center gap-3 border-2 border-white/20 text-white px-8 py-4 rounded-2xl font-semibold hover:bg-white/10 transition-all duration-300"
+          <button
+            onClick={() => history.back()}
+            className="group flex items-center gap-3 border-2 border-slate-200 dark:border-white/20 text-slate-700 dark:text-white px-8 py-4 rounded-2xl font-semibold hover:bg-slate-100 dark:hover:bg-white/10 transition-all duration-300"
           >
             <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
             <span>Go Back</span>
-          </Link>
+          </button>
         </div>
 
         {/* Quick Links */}
-        <div className="mt-12 pt-8 border-t border-white/10">
-          <p className="text-gray-400 mb-4 text-sm">Popular Pages:</p>
+        <div className="mt-12 pt-8 border-t border-slate-200 dark:border-white/10">
+          <p className="text-slate-500 dark:text-gray-400 mb-4 text-sm">Popular Pages:</p>
           <div className="flex flex-wrap gap-3 justify-center">
             {[
               { href: '/core', label: 'Core Committee' },
@@ -67,7 +67,7 @@ export default function NotFound() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="px-4 py-2 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white rounded-lg text-sm transition-all duration-300 border border-white/10 hover:border-white/20"
+                className="px-4 py-2 bg-white/50 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 text-slate-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-white rounded-lg text-sm transition-all duration-300 border border-slate-200 dark:border-white/10 hover:border-emerald-200 dark:hover:border-white/20 shadow-sm hover:shadow-md dark:shadow-none"
               >
                 {link.label}
               </Link>

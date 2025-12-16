@@ -5,7 +5,12 @@
   }
 
   /* Hide cursor on clickable elements too */
-  a, button, input, [data-hover="true"] {
+  a,
+  button,
+  input,
+  [data-hover="true"],
+  select,
+  textarea {
     cursor: none !important;
   }
 }
@@ -17,7 +22,10 @@
   }
 
   /* Ensure cursor shows on clickable elements on mobile */
-  a, button, input, [data-hover="true"] {
+  a,
+  button,
+  input,
+  [data-hover="true"] {
     cursor: pointer;
   }
 }
@@ -27,44 +35,37 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
   z-index: 9999;
+  mix-blend-mode: difference;
+  /* Makes it visible on dark/light backgrounds */
 }
 
-/* Main cursor dot - bright center */
-.cursor-main {
+/* Main cursor dot */
+.cursor-dot {
   position: fixed;
-  width: 20px;
-  height: 20px;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background-color: white;
   border-radius: 50%;
   pointer-events: none;
   z-index: 10001;
-  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Trailing circle - outline */
-.cursor-trail {
+/* Follower ring */
+.cursor-ring {
   position: fixed;
-  width: 40px;
-  height: 40px;
-  border: 2px solid;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  border: 1px solid white;
   border-radius: 50%;
-  background: transparent;
   pointer-events: none;
   z-index: 10000;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Outer glow - subtle aura */
-.cursor-glow {
-  position: fixed;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  filter: blur(8px);
-  transition: background 0.3s ease;
+  will-change: transform;
 }

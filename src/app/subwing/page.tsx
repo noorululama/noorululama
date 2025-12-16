@@ -45,8 +45,8 @@ const page = () => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }}
       />
-      <div>
-        <SubWingsSection/>
+      <div className="min-h-screen bg-background text-foreground">
+        <SubWingsSection />
       </div>
     </>
   )
