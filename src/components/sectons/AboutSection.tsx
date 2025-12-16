@@ -48,7 +48,7 @@ const AboutSection = () => {
             className="space-y-8 lg:sticky lg:top-24"
           >
             <div className="space-y-2">
-              <span className="text-sm font-semibold tracking-[0.2em] text-emerald-600 dark:text-emerald-500 uppercase">Who We Are</span>
+              {/* <span className="text-sm font-semibold tracking-[0.2em] text-emerald-600 dark:text-emerald-500 uppercase">Who We Are</span> */}
               <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tighter text-foreground leading-[0.9]">
                 {content.title} <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-emerald-400 dark:from-emerald-500 dark:to-emerald-300">

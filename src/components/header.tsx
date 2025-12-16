@@ -9,24 +9,48 @@ import { DATA } from '@/data/links';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { ModeToggle } from '@/components/mode-toggle';
 
+import { useAnnouncement } from '@/lib/providers/announcement-provider';
+
 export default function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const pathname = usePathname();
+    const { isVisible, height } = useAnnouncement();
+    const [topOffset, setTopOffset] = useState(0);
 
     useEffect(() => {
+        // Initialize top offset correctly on mount/update
+        if (isVisible) {
+            setTopOffset(Math.max(0, height - window.scrollY));
+        } else {
+            setTopOffset(0);
+        }
+
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20);
+            const currentScroll = window.scrollY;
+            setIsScrolled(currentScroll > 20);
+
+            if (isVisible) {
+                // Smoothly slide the header up as the user scrolls down the announcement bar
+                setTopOffset(Math.max(0, height - currentScroll));
+            } else {
+                setTopOffset(0);
+            }
         };
+
         window.addEventListener('scroll', handleScroll);
+        // Trigger once to set initial state
+        handleScroll();
+
         return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    }, [isVisible, height]);
 
     return (
         <>
             <header
+                style={{ top: `${topOffset}px` }}
                 className={cn(
-                    "fixed top-0 left-0 right-0 z-50 transition-all duration-300 md:py-4 py-3 px-4",
+                    "fixed left-0 right-0 z-50 transition-all duration-300 md:py-4 py-3 px-4",
                     isScrolled
                         ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm"
                         : "bg-transparent"
