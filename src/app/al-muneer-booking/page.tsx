@@ -34,7 +34,7 @@ const AlMuneerBookingPage = () => {
         paymentMethod: ''
     })
 
-    const PRICE_PER_COPY = 250
+    const PRICE_PER_COPY = 300
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
@@ -91,13 +91,13 @@ const AlMuneerBookingPage = () => {
         }
     }
 
-    // Get QR code image based on copy count
+    // Get QR code image
     const getQrCodeImage = () => {
-        return `/images/qr/QR ${formData.copies}.png`
+        return '/images/qr/QR.png'
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 py-12 px-4 flex items-center justify-center">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 py-12 px-4 pt-24 flex items-center justify-center">
             <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
 
                 {/* Header */}
@@ -149,23 +149,33 @@ const AlMuneerBookingPage = () => {
                                     <ul className="space-y-4">
                                         <li className="flex gap-3">
                                             <div className="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center flex-shrink-0 text-sm font-bold">1</div>
-                                            <span>Fill in your valid personal details in the next step.</span>
+                                            <span>വ്യക്തിഗത വിവരങ്ങൾ കൃത്യമായി രേഖപ്പെടുത്തുക</span>
                                         </li>
                                         <li className="flex gap-3">
                                             <div className="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center flex-shrink-0 text-sm font-bold">2</div>
-                                            <span>Select the number of copies you wish to purchase from the counter.</span>
+                                            <span>പ്രീ ബുക്ക് ചെയ്യാൻ ആഗ്രഹിക്കുന്ന കോപ്പികളുടെ എണ്ണം തിരഞ്ഞെടുക്കുക</span>
                                         </li>
                                         <li className="flex gap-3">
                                             <div className="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center flex-shrink-0 text-sm font-bold">3</div>
-                                            <span>Verify the total amount calculated.</span>
+                                            <span>കോപ്പികളുടെ എണ്ണം നൽകിയ ശേഷം ലഭിക്കുന്ന QR കോഡ് സ്കാൻ ചെയ്ത് ഓൺലൈൻ വഴിയോ, കോപ്പികൾ അൽ മുനീർ സ്റ്റാളിലോ ഓഫീസിലോ വന്ന് നേരിട്ട് സ്വീകരിക്കുന്ന സമയത്തോ പണം അടക്കാം</span>
                                         </li>
+
                                         <li className="flex gap-3">
                                             <div className="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center flex-shrink-0 text-sm font-bold">4</div>
-                                            <span>Complete payment using the QR code in the final step.</span>
+                                            <span className="break-words">
+                                                അൽ മുനീർ വാട്സ് ആപ്പ് ഗ്രൂപ്പിൽ ജോയിൻ ചെയ്യാൻ :{" "}
+                                                <a href="https://chat.whatsapp.com/BXEGDhKCYtz44IgpTXrj28" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:underline">
+                                                    Chat on WhatsApp
+                                                </a>
+                                            </span>
                                         </li>
                                         <li className="flex gap-3">
                                             <div className="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center flex-shrink-0 text-sm font-bold">5</div>
-                                            <span>Send the payment screenshot to the WhatsApp number provided.</span>
+                                            <span>
+                                                കൂടുതൽ വിവരങ്ങൾക്ക് :{" "}
+                                                <a href="tel:9037150678" className="text-emerald-600 hover:underline">9037150678</a>,{" "}
+                                                <a href="tel:8590356768" className="text-emerald-600 hover:underline">8590356768</a>
+                                            </span>
                                         </li>
                                     </ul>
                                     <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700 flex justify-between items-center">
@@ -362,7 +372,7 @@ const AlMuneerBookingPage = () => {
                                                 <div className="aspect-square bg-white rounded-xl flex items-center justify-center overflow-hidden">
                                                     <img
                                                         src={getQrCodeImage()}
-                                                        alt={`QR Code for ${formData.copies} copies`}
+                                                        alt="Payment QR Code"
                                                         className="w-full h-full object-contain"
                                                         onError={(e) => {
                                                             (e.target as HTMLImageElement).src = 'https://via.placeholder.com/250x250?text=QR+Code+Not+Found'
@@ -370,6 +380,12 @@ const AlMuneerBookingPage = () => {
                                                     />
                                                 </div>
                                             </div>
+                                            <a
+                                                href={`upi://pay?pa=anasmuhammed954420@oksbi&pn=AlMuneer&cu=INR&am=${formData.copies * PRICE_PER_COPY}`}
+                                                className="block text-emerald-600 font-medium mb-6 hover:underline break-all"
+                                            >
+                                                anasmuhammed954420@oksbi
+                                            </a>
                                             <div className="text-slate-500 text-sm mb-1">Total Amount</div>
                                             <div className="text-4xl font-black text-emerald-600 mb-2">
                                                 ₹{(formData.copies * PRICE_PER_COPY).toLocaleString()}
@@ -382,7 +398,7 @@ const AlMuneerBookingPage = () => {
                                             </div>
 
                                             <a
-                                                href="https://wa.me/918086871734"
+                                                href="https://wa.me/9037150678"
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="w-full block bg-[#25D366] hover:bg-[#20bd5a] text-white p-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-3 group"
@@ -424,9 +440,9 @@ const AlMuneerBookingPage = () => {
                                                     </div>
                                                     <div className="flex flex-wrap items-center gap-3 text-xl font-bold text-slate-800 dark:text-white">
                                                         <span>📞</span>
-                                                        <a href="tel:9847395758" className="hover:text-emerald-600 transition-colors">9847395758</a>
+                                                        <a href="tel:9847395758" className="hover:text-emerald-600 transition-colors">9037150678</a>
                                                         <span className="text-slate-300">|</span>
-                                                        <a href="tel:9947420289" className="hover:text-emerald-600 transition-colors">9947420289</a>
+                                                        <a href="tel:9947420289" className="hover:text-emerald-600 transition-colors">8590356768 </a>
                                                     </div>
                                                 </div>
                                             </div>
