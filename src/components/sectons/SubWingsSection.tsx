@@ -7,8 +7,10 @@ import {
   ChevronLeft, ChevronRight, Eye, Filter, X, Mail, Phone,
   Award, Target, Calendar, MapPin, TrendingUp, Sparkles
 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 const SubWingsSection = () => {
+  const router = useRouter()
   const [isVisible, setIsVisible] = useState(false)
   const [activeWing, setActiveWing] = useState(0)
   const [selectedCategory, setSelectedCategory] = useState('all')
@@ -167,18 +169,18 @@ const SubWingsSection = () => {
       features: ["Content Creation", "Digital Media", "Student Showcase"],
       image: "https://images.pexels.com/photos/1188751/pexels-photo-1188751.jpeg",
       chairman: {
-        name: "Faisal Syed",
-        image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop",
-        department: "Media Studies",
-        location: "faisal.syed@jamianooriya.edu",
-        phone: "+91 98765 43226"
+        name: "Mishab MK",
+        image: "/images/subwing/media-chireman.webp",
+        department: "General Department",
+        location: "Mannarkkad",
+        phone: "+91 62386 61924"
       },
       convener: {
-        name: "Layla Ibrahim",
-        image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop",
-        department: "Communications",
-        location: "layla.ibrahim@jamianooriya.edu",
-        phone: "+91 98765 43227"
+        name: "Fazil ",
+        image: "/images/subwing/media-conveener.webp",
+        department: "Aqeeda Department",
+        location: "Wayanad",
+        phone: "+91 98474 24702"
       },
       members: [
         { name: "Raza Khan", role: "Video Director", image: "https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&h=400&fit=crop" },
@@ -556,17 +558,17 @@ const SubWingsSection = () => {
       textColor: "text-red-600",
       emoji: "❤️",
       features: ["Financial Aid", "Student Support", "Compassion & Solidarity"],
-      image: "/https://idsb.tmgrup.com.tr/ly/uploads/images/2025/06/13/thumbs/1200x675/386791.jpg?v=1749817932v",
+      image: "https://idsb.tmgrup.com.tr/ly/uploads/images/2025/06/13/thumbs/1200x675/386791.jpg?v=1749817932v",
       chairman: {
         name: "Abdullah Aziz",
-        image: "https://idsb.tmgrup.com.tr/ly/uploads/images/2025/06/13/thumbs/1200x675/386791.jpg?v=1749817932v",
+        image: "/images/subwing/reliefcell-chireman.webp",
         department: "Arabic Language",
         location: "abdullah.aziz@jamianooriya.edu",
         phone: "+91 98765 43230"
       },
       convener: {
         name: "Khadija Noor",
-        image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop",
+        image: "/images/subwing/reliefcell-conveener.webp",
         department: "Urdu Literature",
         location: "khadija.noor@jamianooriya.edu",
         phone: "+91 98765 43231"
@@ -863,6 +865,15 @@ const SubWingsSection = () => {
                 <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed max-w-2xl">
                   {wing.fullDescription}
                 </p>
+                {wing.title === "Al-Muneer" && (
+                  <button
+                    onClick={() => router.push('/al-muneer-booking')}
+                    className="mt-6 px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2 group"
+                  >
+                    <span>Pre-booking Started</span>
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                )}
               </div>
             </div>
 
@@ -1201,6 +1212,9 @@ const SubWingsSection = () => {
       {selectedWing && (
         <WingDetailModal wing={selectedWing} onClose={() => setSelectedWing(null)} />
       )}
+
+      {/* Booking Modal */}
+
 
       <style jsx>{`
         @keyframes fadeIn {
