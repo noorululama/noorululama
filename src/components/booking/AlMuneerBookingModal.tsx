@@ -69,11 +69,12 @@ const AlMuneerBookingModal = ({ onClose }: Props) => {
         setLoading(true)
         try {
             // REPLACE THIS URL with your deployed Google Apps Script Web App URL
-            const GOOGLE_SCRIPT_URL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL
+            const GOOGLE_SCRIPT_URL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL || ''
 
-            // Note: 'no-cors' mode is often required for Google Apps Script, 
-            // but it means we can't read the response status/body. 
-            // We assume success if no network error opens.
+            if (!GOOGLE_SCRIPT_URL) {
+                throw new Error("Google Script URL is missing")
+            }
+
             await fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',

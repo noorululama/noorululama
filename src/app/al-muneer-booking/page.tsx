@@ -13,7 +13,6 @@ interface BookingData {
     address: string
     post: string
     pinCode: string
-    pinCode: string
     copies: number
     paymentMethod: 'online' | 'offline' | ''
 }
@@ -28,7 +27,6 @@ const AlMuneerBookingPage = () => {
         phone2: '',
         address: '',
         post: '',
-        pinCode: '',
         pinCode: '',
         copies: 1,
         paymentMethod: ''
