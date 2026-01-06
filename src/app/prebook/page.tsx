@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import { ChevronLeft, ChevronRight, Check, Home } from 'lucide-react'
+import { useState, useRef } from 'react'
+import { ChevronLeft, ChevronRight, Check, Home, Download, Printer } from 'lucide-react'
 import Link from 'next/link'
+import { toPng } from 'html-to-image'
 
 // Define types for booking data
 interface BookingData {
@@ -15,6 +16,7 @@ interface BookingData {
     pinCode: string
     copies: number
     paymentMethod: 'online' | 'offline' | ''
+    bookingId?: string
 }
 
 const AlMuneerBookingPage = () => {
@@ -29,8 +31,10 @@ const AlMuneerBookingPage = () => {
         post: '',
         pinCode: '',
         copies: 1,
-        paymentMethod: ''
+        paymentMethod: '',
+        bookingId: ''
     })
+    const receiptRef = useRef<HTMLDivElement>(null)
 
     const PRICE_PER_COPY = 300
 
@@ -71,13 +75,18 @@ const AlMuneerBookingPage = () => {
                 return;
             }
 
+            // Generate Booking ID: ALM-XXXXXX
+            const bookingId = `ALM-${Math.floor(100000 + Math.random() * 900000)}`
+            const finalData = { ...formData, bookingId }
+            setFormData(prev => ({ ...prev, bookingId }))
+
             await fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(finalData),
             })
 
             setStep(5)
@@ -86,6 +95,25 @@ const AlMuneerBookingPage = () => {
             alert('Failed to submit booking. Please try again.')
         } finally {
             setLoading(false)
+        }
+    }
+
+    const handleDownloadReceipt = async () => {
+        if (!receiptRef.current) return
+
+        try {
+            const dataUrl = await toPng(receiptRef.current, {
+                cacheBust: true,
+                backgroundColor: '#ffffff'
+            })
+
+            const link = document.createElement('a')
+            link.download = `Al-Muneer-Receipt-${formData.bookingId || 'Booking'}.png`
+            link.href = dataUrl
+            link.click()
+        } catch (error) {
+            console.error('Receipt download failed:', error)
+            alert('Failed to download receipt. Please try taking a screenshot instead.')
         }
     }
 
@@ -399,7 +427,7 @@ const AlMuneerBookingPage = () => {
                                                 href="https://wa.me/9037150678"
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="w-full block bg-[#25D366] hover:bg-[#20bd5a] text-white p-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-3 group"
+                                                className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white p-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-3 group"
                                             >
                                                 <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.6.35 1.095.541 1.749.541 3.181 0 5.767-2.587 5.767-5.766.001-3.182-2.585-5.768-5.72-5.728zM12 4.8c4.01 0 7.26 3.2 7.26 7.141 0 3.94-3.25 7.141-7.26 7.141-1.04 0-2.33-.21-3.32-.69l-4.5 1.25 1.25-4.5c-.58-1.09-.95-2.28-.95-3.2C4.74 8 7.99 4.8 12 4.8zM17.47 14.28c-.2-.1-1.18-.58-1.36-.65-.18-.08-.31-.12-.44.1-.13.22-.51.65-.63.79-.12.13-.25.15-.45.05-.2-.1-.85-.31-1.62-1-.6-.54-1-1.2-1.12-1.41-.12-.2-.01-.31.09-.4.08-.09.19-.24.28-.35.09-.11.12-.19.18-.31.06-.12.03-.23-.01-.32-.04-.09-.44-1.06-.6-1.45-.16-.39-.32-.33-.44-.34l-.38-.01c-.13 0-.34.05-.52.25-.18.2-1.04.69-1.04 1.7 0 1.01.73 1.99.83 2.13.1.14 1.44 2.19 3.49 3.08 1.48.64 1.78.51 2.13.48.35-.03 1.18-.48 1.34-.95.16-.47.16-.88.11-.95-.05-.08-.18-.12-.38-.22z" /></svg>
                                                 Share Payment Screenshot
@@ -452,17 +480,243 @@ const AlMuneerBookingPage = () => {
 
                         {/* Step 5: Success */}
                         {step === 5 && (
-                            <div className="space-y-6 animate-fadeIn text-center py-12">
-                                <div className="w-24 h-24 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-6 text-emerald-600">
-                                    <Check className="w-12 h-12" />
+                            <div className="space-y-8 animate-fadeIn text-center py-8">
+                                <div className="w-20 h-20 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-6 text-emerald-600 animate-bounce-slow">
+                                    <Check className="w-10 h-10" />
                                 </div>
-                                <h2 className="text-3xl font-bold text-slate-800 dark:text-white mb-2">Booking Submitted!</h2>
-                                <p className="text-slate-600 dark:text-slate-400 max-w-md mx-auto">
-                                    Thank you for your booking.
-                                    {formData.paymentMethod === 'online'
-                                        ? " Please ensure you've shared the payment screenshot for verification."
-                                        : " Please visit the counter to complete your payment."}
-                                </p>
+
+                                <div>
+                                    <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">Booking Confirmed!</h2>
+                                    <p className="text-slate-600 dark:text-slate-400">
+                                        Your pre-booking has been successfully recorded.
+                                    </p>
+                                </div>
+
+                                {/* Receipt Card (Visible) */}
+                                <div className="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-3xl border border-dashed border-slate-300 dark:border-slate-700 max-w-md mx-auto relative overflow-hidden group hover:border-emerald-300 dark:hover:border-emerald-700/50 transition-colors">
+                                    <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-500" />
+
+                                    <div className="space-y-6">
+                                        <div className="text-center border-b border-slate-200 dark:border-slate-700 pb-6">
+                                            <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Booking ID</div>
+                                            <div className="text-3xl font-black text-slate-800 dark:text-white tracking-tight font-mono">
+                                                {formData.bookingId}
+                                            </div>
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-4 text-left">
+                                            <div>
+                                                <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Name</div>
+                                                <div className="font-semibold text-slate-800 dark:text-white truncate" title={formData.name}>{formData.name}</div>
+                                            </div>
+                                            <div>
+                                                <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Phone</div>
+                                                <div className="font-semibold text-slate-800 dark:text-white">{formData.phone}</div>
+                                            </div>
+                                            <div>
+                                                <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Copies</div>
+                                                <div className="font-semibold text-slate-800 dark:text-white">{formData.copies}</div>
+                                            </div>
+                                            <div>
+                                                <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Amount</div>
+                                                <div className="font-bold text-emerald-600">₹{(formData.copies * PRICE_PER_COPY).toLocaleString()}</div>
+                                            </div>
+                                            <div className="col-span-2">
+                                                <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Payment Method</div>
+                                                <div className="font-semibold text-slate-800 dark:text-white flex items-center gap-2">
+                                                    <span className={`w-2 h-2 rounded-full ${formData.paymentMethod === 'online' ? 'bg-emerald-500' : 'bg-blue-500'}`} />
+                                                    {formData.paymentMethod === 'online' ? 'Online Payment' : 'Offline Payment'}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col gap-4 max-w-xs mx-auto pt-4">
+                                    <button
+                                        onClick={handleDownloadReceipt}
+                                        className="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-4 rounded-xl font-bold hover:shadow-lg hover:scale-105 transition-all flex items-center justify-center gap-2"
+                                    >
+                                        <Download className="w-5 h-5" />
+                                        Download Receipt
+                                    </button>
+
+                                    {formData.paymentMethod === 'online' && (
+                                        <a
+                                            href="https://wa.me/9037150678"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="w-full bg-[#25D366] text-white py-4 rounded-xl font-bold hover:bg-[#20bd5a] hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                                        >
+                                            <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.6.35 1.095.541 1.749.541 3.181 0 5.767-2.587 5.767-5.766.001-3.182-2.585-5.768-5.72-5.728zM12 4.8c4.01 0 7.26 3.2 7.26 7.141 0 3.94-3.25 7.141-7.26 7.141-1.04 0-2.33-.21-3.32-.69l-4.5 1.25 1.25-4.5c-.58-1.09-.95-2.28-.95-3.2C4.74 8 7.99 4.8 12 4.8zM17.47 14.28c-.2-.1-1.18-.58-1.36-.65-.18-.08-.31-.12-.44.1-.13.22-.51.65-.63.79-.12.13-.25.15-.45.05-.2-.1-.85-.31-1.62-1-.6-.54-1-1.2-1.12-1.41-.12-.2-.01-.31.09-.4.08-.09.19-.24.28-.35.09-.11.12-.19.18-.31.06-.12.03-.23-.01-.32-.04-.09-.44-1.06-.6-1.45-.16-.39-.32-.33-.44-.34l-.38-.01c-.13 0-.34.05-.52.25-.18.2-1.04.69-1.04 1.7 0 1.01.73 1.99.83 2.13.1.14 1.44 2.19 3.49 3.08 1.48.64 1.78.51 2.13.48.35-.03 1.18-.48 1.34-.95.16-.47.16-.88.11-.95-.05-.08-.18-.12-.38-.22z" /></svg>
+                                            Verify Payment
+                                        </a>
+                                    )}
+                                </div>
+
+                                {/* Hidden Receipt for Capture */}
+                                <div className="absolute top-0 left-0 -z-50 opacity-0 pointer-events-none">
+                                    <div ref={receiptRef} style={{
+                                        width: '600px',
+                                        padding: '40px',
+                                        backgroundColor: '#ffffff',
+                                        color: '#0f172a',
+                                        fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                                        position: 'relative',
+                                        boxSizing: 'border-box'
+                                    }}>
+                                        {/* Receipt Header */}
+                                        <div style={{
+                                            borderBottom: '2px solid #0f172a',
+                                            paddingBottom: '24px',
+                                            marginBottom: '24px',
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'flex-start'
+                                        }}>
+                                            <div>
+                                                <h1 style={{
+                                                    fontSize: '30px',
+                                                    fontWeight: '900',
+                                                    marginBottom: '8px',
+                                                    color: '#047857',
+                                                    margin: 0
+                                                }}>Al-Muneer</h1>
+                                                <div style={{
+                                                    fontSize: '14px',
+                                                    fontWeight: '700',
+                                                    opacity: 0.6,
+                                                    textTransform: 'uppercase',
+                                                    letterSpacing: '0.1em'
+                                                }}>Pre-booking Receipt</div>
+                                            </div>
+                                            <div style={{ textAlign: 'right' }}>
+                                                <div style={{ fontSize: '14px', color: '#64748b' }}>Date</div>
+                                                <div style={{ fontWeight: '700' }}>{new Date().toLocaleDateString()}</div>
+                                            </div>
+                                        </div>
+
+                                        {/* Main Content */}
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                                            <div style={{
+                                                padding: '24px',
+                                                border: '1px solid #e2e8f0',
+                                                backgroundColor: '#f8fafc',
+                                                borderRadius: '12px'
+                                            }}>
+                                                <div style={{
+                                                    fontSize: '12px',
+                                                    fontWeight: '700',
+                                                    textTransform: 'uppercase',
+                                                    letterSpacing: '0.1em',
+                                                    marginBottom: '8px',
+                                                    color: '#64748b'
+                                                }}>Booking Identifier</div>
+                                                <div style={{
+                                                    fontSize: '48px',
+                                                    fontWeight: '900',
+                                                    letterSpacing: '-0.025em',
+                                                    fontFamily: 'monospace',
+                                                    color: '#0f172a',
+                                                    lineHeight: 1
+                                                }}>
+                                                    {formData.bookingId}
+                                                </div>
+                                            </div>
+
+                                            <div style={{
+                                                display: 'grid',
+                                                gridTemplateColumns: '1fr 1fr',
+                                                gap: '32px',
+                                                fontSize: '18px'
+                                            }}>
+                                                {[
+                                                    { label: 'Customer Name', value: formData.name },
+                                                    { label: 'Phone Number', value: formData.phone },
+                                                    { label: 'Place', value: formData.place },
+                                                    { label: 'Post Office', value: formData.post }
+                                                ].map((item, i) => (
+                                                    <div key={i}>
+                                                        <div style={{
+                                                            fontSize: '12px',
+                                                            fontWeight: '700',
+                                                            textTransform: 'uppercase',
+                                                            color: '#64748b',
+                                                            marginBottom: '4px'
+                                                        }}>{item.label}</div>
+                                                        <div style={{
+                                                            fontWeight: '700',
+                                                            borderBottom: '1px solid #e2e8f0',
+                                                            paddingBottom: '4px'
+                                                        }}>{item.value}</div>
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                            <div style={{
+                                                backgroundColor: '#0f172a',
+                                                borderRadius: '22px',
+                                                color: '#ffffff',
+                                                padding: '24px',
+                                                marginTop: '32px',
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center'
+                                            }}>
+                                                <div>
+                                                    <div style={{
+                                                        fontWeight: '700',
+                                                        textTransform: 'uppercase',
+                                                        fontSize: '12px',
+                                                        letterSpacing: '0.05em',
+                                                        marginBottom: '4px',
+                                                        color: '#34d399'
+                                                    }}>Total Paid Amount</div>
+                                                    <div style={{ fontSize: '36px', fontWeight: '900', lineHeight: 1 }}>
+                                                        ₹{(formData.copies * PRICE_PER_COPY).toLocaleString()}
+                                                    </div>
+                                                    <div style={{ fontSize: '14px', opacity: 0.7, marginTop: '4px' }}>
+                                                        {formData.copies} Copy @ ₹{PRICE_PER_COPY}
+                                                    </div>
+                                                </div>
+                                                <div style={{ textAlign: 'right' }}>
+                                                    <div style={{
+                                                        fontSize: '12px',
+                                                        fontWeight: '700',
+                                                        textTransform: 'uppercase',
+                                                        letterSpacing: '0.05em',
+                                                        marginBottom: '4px',
+                                                        opacity: 0.7
+                                                    }}>Payment Method</div>
+                                                    <div style={{
+                                                        fontSize: '20px',
+                                                        fontWeight: '700',
+                                                        backgroundColor: '#ffffff',
+                                                        borderRadius: '6px',
+                                                        color: '#0f172a',
+                                                        padding: '4px 12px',
+                                                        display: 'inline-block'
+                                                    }}>
+                                                        {formData.paymentMethod === 'online' ? 'ONLINE' : 'OFFLINE'}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Footer */}
+                                        <div style={{
+                                            marginTop: '32px',
+                                            textAlign: 'center',
+                                            fontSize: '14px',
+                                            paddingTop: '24px',
+                                            borderTop: '1px solid #f1f5f9',
+                                            color: '#94a3b8'
+                                        }}>
+                                            <p style={{ margin: 0 }}>Thank you for supporting Al-Muneer.</p>
+                                            <p style={{ margin: '4px 0 0 0', fontFamily: 'monospace', fontSize: '12px', opacity: 0.5 }}>Generated via noorululama.com</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         )}
 

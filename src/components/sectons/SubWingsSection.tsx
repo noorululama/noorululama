@@ -867,7 +867,7 @@ const SubWingsSection = () => {
                 </p>
                 {wing.title === "Al-Muneer" && (
                   <button
-                    onClick={() => router.push('/al-muneer-booking')}
+                    onClick={() => router.push('/prebook')}
                     className="mt-6 px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2 group"
                   >
                     <span>Pre-booking Started</span>
