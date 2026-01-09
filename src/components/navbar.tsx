@@ -1,3 +1,5 @@
+'use client';
+
 import { Dock, DockIcon } from "@/components/magicui/dock";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -9,8 +11,12 @@ import {
 import { DATA } from "@/data/links";
 import { cn } from "@/app/lib/utils";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
+  const pathname = usePathname();
+  if (pathname?.startsWith('/admin')) return null;
+
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 mx-auto mb-6 flex origin-bottom h-full max-h-14 md:hidden">
       <div className="fixed bottom-0 inset-x-0 h-16 w-full bg-gradient-to-t from-white/90 to-transparent dark:from-black/90 dark:to-transparent pointer-events-none"></div>

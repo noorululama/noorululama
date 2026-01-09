@@ -18,6 +18,8 @@ export default function Header() {
     const { isVisible, height } = useAnnouncement();
     const [topOffset, setTopOffset] = useState(0);
 
+    if (pathname?.startsWith('/admin')) return null;
+
     useEffect(() => {
         // Initialize top offset correctly on mount/update
         if (isVisible) {

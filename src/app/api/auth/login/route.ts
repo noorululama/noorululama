@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { SignJWT } from 'jose';
 import { cookies } from 'next/headers';
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123'; // Fallback for dev
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'noorululama-124@admin'; // Fallback for dev
 const JWT_SECRET = process.env.JWT_SECRET || 'your-fallback-secret-key-change-this';
 
 export async function POST(req: Request) {

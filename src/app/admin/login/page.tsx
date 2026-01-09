@@ -33,7 +33,7 @@ export default function AdminLogin() {
                 </div>
 
                 <h1 className="text-2xl font-bold text-white text-center mb-2">Admin Access</h1>
-                <p className="text-slate-400 text-center mb-8 text-sm">Enter password to manage announcements</p>
+                <p className="text-slate-400 text-center mb-8 text-sm">Enter password to manage site content</p>
 
                 <form onSubmit={handleLogin} className="space-y-4">
                     <div>

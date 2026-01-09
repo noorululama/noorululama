@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ExternalLink, Zap } from 'lucide-react';
 import axios from 'axios';
 import { useAnnouncement } from '@/lib/providers/announcement-provider';
+import { usePathname } from 'next/navigation';
 
 interface Announcement {
     _id: string;
@@ -18,6 +19,9 @@ const AnnouncementBar = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [loading, setLoading] = useState(true);
     const { isVisible, setIsVisible } = useAnnouncement();
+    const pathname = usePathname();
+
+    if (pathname?.startsWith('/admin')) return null;
 
     useEffect(() => {
         const fetchAnnouncements = async () => {
