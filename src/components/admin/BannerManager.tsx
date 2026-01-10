@@ -45,18 +45,32 @@ export default function BannerManager() {
         const file = e.target.files?.[0];
         if (!file) return;
 
+        // Vercel Serverless Function body size limit is 4.5MB
+        if (file.size > 4.5 * 1024 * 1024) {
+            alert('File is too large. Please upload an image smaller than 4.5MB.');
+            return;
+        }
+
         setUploading(true);
         try {
-            // Simplified for Vercel Blob: send file in body, name in query param
-            const res = await axios.post(`/api/upload?filename=${encodeURIComponent(file.name)}`, file, {
-                headers: { 'Content-Type': file.type }
+            const res = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
+                method: 'POST',
+                body: file,
+                headers: {
+                    'Content-Type': file.type
+                }
             });
-            if (res.data.success) {
-                setFormData(prev => ({ ...prev, imageUrl: res.data.url }));
+
+            const data = await res.json();
+
+            if (data.success) {
+                setFormData(prev => ({ ...prev, imageUrl: data.url }));
+            } else {
+                alert(`Upload failed: ${data.error || 'Server error'}`);
             }
-        } catch (err) {
+        } catch (err: any) {
             console.error('Upload error:', err);
-            alert('Upload failed');
+            alert(`Upload error: ${err.message || 'Upload failed'}`);
         } finally {
             setUploading(false);
         }
